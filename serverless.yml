@@ -15,6 +15,6 @@ package:
 
 functions:
   slack:
-    handler: src/dev/index.post
+    handler: src/index.post
     description: "Post message to Slack"
     timeout: 60
