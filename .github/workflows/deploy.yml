@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Deploy code to Lambda
-      uses:  kuri-megane/py-lambda-action@v1.0.0
+      uses:  kuri-megane/py-lambda-action@master
       with:
         lambda_layer_arn: 'arn:aws:lambda:ap-northeast-1:249908578461:layer:AWSLambda-Python38-SciPy1x'
         lambda_function_name: 'arn:aws:lambda:ap-northeast-1:152716024687:function:test'
