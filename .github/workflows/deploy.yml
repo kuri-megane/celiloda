@@ -21,10 +21,10 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Notify result to slack
-        uses: kuri-megane/slatify@master
-        if: always()
-        with:
-          type: ${{ job.status }}
-          job_name: '*Deploy Lambda*'
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      uses: kuri-megane/slatify@master
+      if: always()
+      with:
+        type: ${{ job.status }}
+        job_name: '*Deploy Lambda*'
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
