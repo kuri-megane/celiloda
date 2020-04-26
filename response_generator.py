@@ -16,7 +16,7 @@ class Response:
         }
         return {
             'statusCode': 200,
-            'headers': json.dumps(headers),
+            'headers': headers,
             'body': json.dumps(body)
         }
 
@@ -31,6 +31,6 @@ class Response:
         }
         return {
             'statusCode': 500,
-            'headers': json.dumps(headers),
+            'headers': headers,
             'body': json.dumps(body)
         }

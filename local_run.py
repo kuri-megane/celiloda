@@ -9,10 +9,7 @@ def set_env():
 def success():
     from lambda_function import main
     event = {
-        "body": {
-            "kind": 1,
-            "val": 36.0
-        }
+        "body": "{\n  \"kind\":1,\n  \"val\":36.0\n}"
     }
     context = ""
     ret = main(event=event, context=context)

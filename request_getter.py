@@ -1,3 +1,6 @@
+import json
+
+
 class Request:
 
     def __init__(self, event, context):
@@ -12,7 +15,7 @@ class Request:
 
     def _get_body(self):
         if 'body' in self.event:
-            self.body = self.event['body']
+            self.body = json.loads(self.event['body'])
         else:
             raise KeyError('cannot find body')
 

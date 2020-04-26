@@ -34,4 +34,4 @@ def main(event, context):
 
 
 def lambda_handler(event, context):
-    main(event=event, context=context)
+    return main(event=event, context=context)
