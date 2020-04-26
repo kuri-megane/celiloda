@@ -1,53 +1,37 @@
-import mysql.connector
-import os
-
-from os.path import join, dirname
-from dotenv import load_dotenv
-
-load_dotenv(verbose=True)
-
-env_file_path = join(dirname(__file__), '.env')
-load_dotenv(env_file_path)
+from db.life_log_1 import LifeLog1
+import request_getter
+import response_generator
+from debug import logger
 
 
-DB_USER = os.environ["DB_USER"]
-DB_PASSWORD = os.environ["DB_PASSWORD"]
-DB_HOST = os.environ["DB_HOST"]
-DB_NAME = os.environ["DB_NAME"]
+def main(event, context):
 
+    logger.info('start main')
+    res = response_generator.Response()
 
-def execute_query(event):
-    config = {
-        'user': DB_USER,
-        'password': DB_PASSWORD,
-        'host': DB_HOST,
-        'database': DB_NAME,
-    }
+    try:
+        input_data = request_getter.Request(event=event, context=context)
+        kind, val = input_data.get()
+    except KeyError as e:
+        logger.error('err request parse >> %s', str(e))
+        return res.generate_fail(detail=str(e))
 
-    cnx = mysql.connector.connect(**config)
-    cursor = cnx.cursor()
+    logger.info('kind:%d, val:%f', kind, val)
 
-    kind = 2
-    dt = '2020-04-19 20:26:46.010111'
-    val = 37.2
+    logger.info('start database')
+    try:
+        table = LifeLog1()
+        table.insert(kind=kind, val=val)
+        result = table.check_records()
+        logger.debug(result)
+    except Exception as e:
+        logger.error('err database >> %s', str(e))
+        return res.generate_fail(detail=str(e))
+    logger.info('end database')
 
-    # insert
-    ret = cursor.execute('insert into lifelog1 (kind, dt, val) values (%s, %s, %s)', (kind, dt, val))
-    print(ret)
-
-    # # select
-    # cursor.execute('select * from lifelog1')
-    # row = cursor.fetchone()
-    #
-    # # 出力
-    # for i in row:
-    #     print(i)
-
-    # データベースから切断
-    cursor.close()
-    cnx.commit()
-    cnx.close()
+    logger.info('end main')
+    return res.generate_success()
 
 
 def lambda_handler(event, context):
-    execute_query(event)
+    main(event=event, context=context)

@@ -1,11 +1,14 @@
-from lambda_function import lambda_handler
+from logging import getLogger, StreamHandler, INFO, DEBUG
 
 
-def success():
-    event = ""
-    context = ""
-    lambda_handler(event=event, context=context)
+def set_logger():
+    logger = getLogger(__name__)
+    handler = StreamHandler()
+    handler.setLevel(DEBUG)
+    logger.setLevel(DEBUG)
+    logger.addHandler(handler)
+    logger.info('start logging debug')
+    return logger
 
 
-if __name__ == '__main__':
-    success()
+logger = set_logger()
